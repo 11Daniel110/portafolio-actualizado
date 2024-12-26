@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contacto</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Lato.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () { // Espera a que el DOM esté listo
+            document.getElementById('myForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const subject = document.getElementById('subject').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // Validación básica del lado del cliente
+                if (!email || !subject || !message) {
+                    alert('Todos los campos son obligatorios.');
+                    return;
+                }
+
+                fetch('/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        to: email,
+                        subject: subject,
+                        message: message
+                    })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Mensaje enviado correctamente.");
+                           document.getElementById("myForm").reset();
+                        } else {
+                            alert("Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.");
+                            console.error('Error en la respuesta del servidor:', response.status, response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al enviar la solicitud:', error);
+                        alert("Error al enviar el formulario. Por favor, verifica tu conexión a internet.");
+                    });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container">
+            <a class="navbar-brand logo" href="#"></a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarNav">
+                <span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects-grid-cards.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="hire-me.html">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="page">
+        <section class="portfolio-block hire-me">
+            <div class="container">
+                <div class="heading">
+                    <h2>Contrátame</h2>
+                </div>
+
+
+                <form id="myForm">
+                    <div class="mb-3">
+                        <label class="form-label" for="subject">Asunto</label>
+                        <input class="form-control" type="text" id="subject" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input class="form-control" type="email" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="message">Mensaje</label>
+                        <textarea class="form-control" id="message" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary d-block w-100" type="submit">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer class="page-footer py-3 border-top">
+        <div class="container my-4">
+            <div class="links"><a href="#">Sobre mi</a><a href="#">Contactame</a><a href="#">Proyectos</a></div>
+            <div class="social-icons"><a class="me-3" href="#"><i class="icon ion-social-facebook"></i></a><a
+                    class="me-3" href="#"><i class="icon ion-social-instagram-outline"></i></a><a class="me-3"
+                    href="#"><i class="icon ion-social-twitter"></i></a></div>
+        </div>
+    </footer>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/pikaday.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+
+</html>
