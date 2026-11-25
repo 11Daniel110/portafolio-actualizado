@@ -1,65 +1,78 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
-const cors = require('cors');
+const path = require('path');
 
-// Crea una instancia de express
 const app = express();
-const port = 3000;  // Puedes usar el puerto que prefieras
+const port = process.env.PORT || 3000;
 
-// Middleware para parsear JSON
-app.use(express.json());
-app.use(cors());
+app.disable('x-powered-by');
+app.use(express.json({ limit: '10kb' }));
+app.use('/assets', express.static(path.join(__dirname, 'assets'), {
+  dotfiles: 'deny',
+  index: false
+}));
 
-// Configura el transporte de Nodemailer
-const transporter = nodemailer.createTransport({
-  service: 'gmail', // Puedes usar otro proveedor de correo
-  auth: {
-    user: 'manejocorreos@gmail.com', // Tu correo de Gmail
-    pass: 'nlwd nqyf ehkz afhq' // La contraseña o App Password si usas autenticación de dos factores
-  }
-});
-
-// Ruta POST para manejar el envío de correos
-app.post('/send-email', (req, res) => {
-  const { to, subject, message } = req.body;
-
-    // Dirección de correo predeterminada donde quieres recibir los mensajes
-    const correoPredeterminado = 'danielacunaaranzazu@gmail.com'; // Reemplaza con tu correo
-
-
-  const mailOptions = {
-    from: to, // Usa la dirección proporcionada por el usuario como remitente
-    to: correoPredeterminado, // Envía el correo a tu dirección predeterminada
-    subject: subject,
-    text: `De: ${to}\n\nMensaje: ${message}`
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).send('Error al enviar el correo: ' + error);
-    }
-    res.status(200).send('Correo enviado: ' + info.response);
-  });
-});
-
-// Sirve archivos estáticos desde el directorio actual
-app.use(express.static(__dirname));
-
-
-// Define una ruta para "/" que sirva index.html por defecto
-app.get('/', (req, res) => {
+app.get(['/', '/index.html'], (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-
-
-// Ruta POST para manejar el envío de correos (no se modifica)
-app.post('/send-email', (req, res) => {
-    const { to, subject, message } = req.body;
+app.get('/hire-me.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'hire-me.html'));
 });
 
-// Inicia el servidor en el puerto 3000
+app.get('/projects-grid-cards.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'projects-grid-cards.html'));
+});
+
+app.post('/send-email', async (req, res) => {
+  const { email, subject, message } = req.body || {};
+
+  if (
+    typeof email !== 'string' ||
+    typeof subject !== 'string' ||
+    typeof message !== 'string' ||
+    email.length > 254 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ||
+    !subject.trim() ||
+    subject.trim().length > 200 ||
+    !message.trim() ||
+    message.trim().length > 10000
+  ) {
+    return res.status(400).json({ error: 'Revisa los datos del formulario.' });
+  }
+
+  const { SMTP_USER, SMTP_APP_PASSWORD, CONTACT_EMAIL } = process.env;
+  if (!SMTP_USER || !SMTP_APP_PASSWORD || !CONTACT_EMAIL) {
+    return res.status(503).json({ error: 'El servicio de correo no está configurado.' });
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_APP_PASSWORD
+    }
+  });
+
+  try {
+    await transporter.sendMail({
+      from: SMTP_USER,
+      to: CONTACT_EMAIL,
+      replyTo: email.trim(),
+      subject: subject.trim(),
+      text: `De: ${email.trim()}\n\nMensaje: ${message.trim()}`
+    });
+    return res.status(200).json({ message: 'Correo enviado correctamente.' });
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+    return res.status(500).json({ error: 'No fue posible enviar el correo.' });
+  }
+});
+
+app.use((req, res) => {
+  res.status(404).send('No encontrado');
+});
+
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
-

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/css/Lato.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
     <link rel="stylesheet" href="assets/css/pikaday.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script>
         document.addEventListener('DOMContentLoaded', function () { // Espera a que el DOM esté listo
             document.getElementById('myForm').addEventListener('submit', function (event) {
@@ -30,7 +31,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        to: email,
+                        email: email,
                         subject: subject,
                         message: message
                     })
