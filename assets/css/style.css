@@ -1,0 +1,175 @@
+body {
+  padding-top: 70px;
+  color: #343a40;
+  font-family: Lato, sans-serif;
+}
+
+.portfolio-navbar {
+  background: linear-gradient(120deg, #1e6bd6, #6842b8);
+}
+
+.portfolio-navbar .navbar-brand {
+  color: #fff;
+}
+
+.portfolio-block {
+  padding: 72px 0;
+}
+
+.portfolio-block.block-intro {
+  padding-top: 96px;
+  text-align: center;
+}
+
+.portfolio-block.block-intro .avatar {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 24px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+}
+
+.portfolio-block.block-intro .about-me {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.portfolio-block .heading {
+  margin-bottom: 36px;
+  text-align: center;
+}
+
+.portfolio-block .heading h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.portfolio-block.cv .group {
+  margin-bottom: 56px;
+}
+
+.portfolio-block.cv .item {
+  margin-bottom: 28px;
+}
+
+.portfolio-block.cv .period {
+  display: block;
+  text-align: right;
+}
+
+.portfolio-info-card {
+  height: 100%;
+  padding: 28px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.portfolio-info-card h2 {
+  margin-bottom: 22px;
+  font-size: 1.35rem;
+}
+
+.portfolio-info-card .row {
+  margin-bottom: 12px;
+}
+
+.projects-cards .card {
+  height: 100%;
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.projects-cards .card-img-top {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.design-card .card-img-top {
+  height: 320px;
+  background: #f8f9fa;
+  object-fit: contain;
+}
+
+.design-card .card-body {
+  flex: 1;
+}
+
+.creative-portfolio {
+  background: #f7f8fb;
+}
+
+.design-category {
+  margin-top: 40px;
+}
+
+.design-category-heading {
+  margin-bottom: 20px;
+}
+
+.design-category-heading h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.design-gallery-empty {
+  display: grid;
+  min-height: 140px;
+  padding: 24px;
+  place-items: center;
+  border: 1px dashed #adb5bd;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #6c757d;
+  text-align: center;
+}
+
+.design-gallery-empty p {
+  margin: 0;
+}
+
+.scale-on-hover {
+  transition: transform 180ms ease;
+}
+
+.scale-on-hover:hover {
+  transform: scale(1.03);
+}
+
+.portfolio-block.hire-me form {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.page-footer {
+  text-align: center;
+}
+
+.page-footer .links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.page-footer a {
+  color: inherit;
+}
+
+@media (max-width: 767.98px) {
+  .portfolio-block {
+    padding: 48px 0;
+  }
+
+  .portfolio-block.cv .period {
+    margin-top: 8px;
+    text-align: left;
+  }
+
+  .page-footer .links {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+}
